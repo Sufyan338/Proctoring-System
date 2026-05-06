@@ -73,16 +73,28 @@ def create_app(env: str | None = None) -> Flask:
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     def serve_frontend(path):
+        """
+        Serve static frontend files.  send_from_directory validates the resolved
+        path stays inside static_dir, preventing path-traversal attacks.
+        An empty (root) path always serves index.html directly.
+        """
+        from werkzeug.exceptions import NotFound
+
         static_dir = app.static_folder
         if not static_dir:
             return jsonify({"error": "Not found."}), 404
-        # Always use send_from_directory which safely validates the path
-        # against the static_folder root, preventing path traversal.
-        if path and os.path.exists(os.path.join(static_dir, path)):
-            return send_from_directory(static_dir, path)
-        if os.path.exists(os.path.join(static_dir, "index.html")):
+
+        if path:
+            try:
+                return send_from_directory(static_dir, path)
+            except NotFound:
+                pass
+
+        # SPA fallback — serve index.html for unknown paths
+        try:
             return send_from_directory(static_dir, "index.html")
-        return jsonify({"error": "Not found."}), 404
+        except NotFound:
+            return jsonify({"error": "Not found."}), 404
 
     return app
 
