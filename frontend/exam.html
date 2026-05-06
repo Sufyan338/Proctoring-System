@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProctorAI – Exam</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="exam-page">
+
+  <header class="top-bar">
+    <div class="brand-sm">🎓 ProctorAI</div>
+    <div id="examTitle" class="exam-title-display">Loading exam…</div>
+    <div class="timer-wrap">
+      <span>⏱</span>
+      <span id="timerDisplay" class="timer">00:00</span>
+    </div>
+    <button id="endExamBtn" class="btn-danger">Submit Exam</button>
+    <button id="logoutBtn" class="btn-ghost">Logout</button>
+  </header>
+
+  <main class="exam-main">
+    <!-- LEFT: exam content / question panel -->
+    <section class="exam-content-panel">
+      <div id="noExamMsg" class="info-box">
+        <h2>No active exam</h2>
+        <p>Ask your administrator to create an exam and share the exam ID.</p>
+        <label>Enter Exam ID: <input id="examIdInput" type="number" min="1" style="width:80px" /></label>
+        <button id="joinExamBtn" class="btn-primary" style="margin-top:8px">Join Exam</button>
+        <div id="joinError" class="error-msg hidden"></div>
+      </div>
+
+      <div id="examContent" class="hidden">
+        <div class="exam-info-box">
+          <h3 id="examName">—</h3>
+          <p id="examDesc"></p>
+          <p id="examDuration"></p>
+          <p class="warn-note">⚠️ Your webcam is being monitored. Do not switch tabs or leave the window.</p>
+        </div>
+        <div class="answer-area">
+          <p class="instructions">This demo exam monitors you via AI proctoring. In a real deployment, exam questions would be loaded here.</p>
+          <textarea id="answerBox" rows="12" placeholder="Type your answers here…"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: webcam panel -->
+    <aside class="webcam-panel">
+      <div class="webcam-header">
+        <span>📷 Live Proctoring</span>
+        <span id="faceStatus" class="face-badge neutral">–</span>
+      </div>
+
+      <div class="video-wrap">
+        <video id="webcam" autoplay muted playsinline></video>
+        <canvas id="overlay" class="overlay-canvas"></canvas>
+      </div>
+
+      <div id="camError" class="error-msg hidden">
+        Camera access denied or unavailable. Exam cannot proceed.
+      </div>
+
+      <div class="alerts-panel">
+        <div class="alerts-header">
+          <strong>⚠️ Alerts</strong>
+          <span id="alertCount" class="badge">0</span>
+        </div>
+        <ul id="alertList" class="alert-list"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Cheating warning overlay -->
+  <div id="warningOverlay" class="warning-overlay hidden">
+    <div class="warning-box">
+      <span class="warning-icon">🚨</span>
+      <h2 id="warningTitle">Warning</h2>
+      <p id="warningMsg">Suspicious activity detected.</p>
+      <button id="warningDismiss" class="btn-primary">Acknowledge</button>
+    </div>
+  </div>
+
+  <script src="js/exam.js"></script>
+</body>
+</html>

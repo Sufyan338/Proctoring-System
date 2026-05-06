@@ -1,0 +1,25 @@
+# ── Core web framework ────────────────────────────────────────────────────────
+Flask==3.0.3
+flask-cors==4.0.1
+flask-jwt-extended==4.6.0
+flask-sqlalchemy==3.1.1
+gunicorn==22.0.0
+
+# ── Database ──────────────────────────────────────────────────────────────────
+SQLAlchemy==2.0.30
+# Uncomment for PostgreSQL in production:
+# psycopg2-binary==2.9.9
+
+# ── AI / Computer Vision ──────────────────────────────────────────────────────
+opencv-python-headless==4.9.0.80
+numpy==1.26.4
+# MediaPipe for advanced face-mesh and gaze detection
+mediapipe==0.10.14
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+Werkzeug==3.0.3
+python-dotenv==1.0.1
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest==8.2.0
+pytest-cov==5.0.0

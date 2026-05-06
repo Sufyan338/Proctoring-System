@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProctorAI – Admin Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="dashboard-page">
+
+  <nav class="sidebar">
+    <div class="sidebar-brand">🎓 ProctorAI</div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="nav-link active" data-section="overview">📊 Overview</a></li>
+      <li><a href="#" class="nav-link" data-section="sessions">👁 Sessions</a></li>
+      <li><a href="#" class="nav-link" data-section="alerts">🚨 Alerts</a></li>
+      <li><a href="#" class="nav-link" data-section="exams">📝 Exams</a></li>
+      <li><a href="#" class="nav-link" data-section="users">👤 Users</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <span id="adminName" class="admin-badge">Admin</span>
+      <button id="logoutBtn" class="btn-ghost-sm">Logout</button>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+
+    <!-- ── Overview ── -->
+    <section id="section-overview" class="dash-section active">
+      <h2 class="section-title">Dashboard Overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📋</div>
+          <div class="stat-value" id="stat-total">–</div>
+          <div class="stat-label">Total Sessions</div>
+        </div>
+        <div class="stat-card active-card">
+          <div class="stat-icon">🟢</div>
+          <div class="stat-value" id="stat-active">–</div>
+          <div class="stat-label">Active Now</div>
+        </div>
+        <div class="stat-card flagged-card">
+          <div class="stat-icon">🚩</div>
+          <div class="stat-value" id="stat-flagged">–</div>
+          <div class="stat-label">Flagged</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-value" id="stat-alerts">–</div>
+          <div class="stat-label">Total Alerts</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <h3>Alert Breakdown</h3>
+          <div id="alertBreakdown" class="bar-chart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Recent Activity</h3>
+          <div id="recentActivity" class="activity-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Sessions ── -->
+    <section id="section-sessions" class="dash-section">
+      <div class="section-header">
+        <h2 class="section-title">Exam Sessions</h2>
+        <button id="refreshSessions" class="btn-sm">↻ Refresh</button>
+      </div>
+      <div class="filter-bar">
+        <input id="sessionSearch" type="text" placeholder="Search student…" />
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="flagged">Flagged</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="sessionsTable">
+          <thead>
+            <tr>
+              <th>#</th><th>Student</th><th>Exam</th><th>Started</th><th>Status</th><th>Alerts</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="sessionsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Alerts ── -->
+    <section id="section-alerts" class="dash-section">
+      <div class="section-header">
+        <h2 class="section-title">Cheating Alerts</h2>
+        <button id="refreshAlerts" class="btn-sm">↻ Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="alertsTable">
+          <thead>
+            <tr><th>#</th><th>Session</th><th>Type</th><th>Confidence</th><th>Message</th><th>Time</th></tr>
+          </thead>
+          <tbody id="alertsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Exams ── -->
+    <section id="section-exams" class="dash-section">
+      <div class="section-header">
+        <h2 class="section-title">Manage Exams</h2>
+        <button id="openCreateExam" class="btn-primary">+ New Exam</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="examsTable">
+          <thead>
+            <tr><th>#</th><th>Title</th><th>Duration</th><th>Created</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="examsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Users ── -->
+    <section id="section-users" class="dash-section">
+      <div class="section-header">
+        <h2 class="section-title">Users</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Create exam modal -->
+  <div id="createExamModal" class="modal hidden">
+    <div class="modal-box">
+      <h3>Create New Exam</h3>
+      <form id="createExamForm">
+        <div class="form-group">
+          <label>Title</label>
+          <input id="examTitleInput" type="text" required />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="examDescInput" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Duration (minutes)</label>
+          <input id="examDurInput" type="number" min="5" value="60" required />
+        </div>
+        <div id="createExamError" class="error-msg hidden"></div>
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary">Create</button>
+          <button type="button" id="closeModal" class="btn-ghost">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Session detail modal -->
+  <div id="sessionDetailModal" class="modal hidden">
+    <div class="modal-box modal-lg">
+      <h3>Session Detail</h3>
+      <div id="sessionDetailContent"></div>
+      <div class="modal-actions">
+        <button type="button" id="closeSessionModal" class="btn-ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
