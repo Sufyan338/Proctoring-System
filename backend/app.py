@@ -74,9 +74,13 @@ def create_app(env: str | None = None) -> Flask:
     @app.route("/<path:path>")
     def serve_frontend(path):
         static_dir = app.static_folder
-        if static_dir and os.path.exists(os.path.join(static_dir, path)):
+        if not static_dir:
+            return jsonify({"error": "Not found."}), 404
+        # Always use send_from_directory which safely validates the path
+        # against the static_folder root, preventing path traversal.
+        if path and os.path.exists(os.path.join(static_dir, path)):
             return send_from_directory(static_dir, path)
-        if static_dir and os.path.exists(os.path.join(static_dir, "index.html")):
+        if os.path.exists(os.path.join(static_dir, "index.html")):
             return send_from_directory(static_dir, "index.html")
         return jsonify({"error": "Not found."}), 404
 
@@ -99,4 +103,5 @@ def _seed_admin(app: Flask) -> None:
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "false").lower() in ("1", "true")
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=debug)

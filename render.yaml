@@ -19,7 +19,9 @@ services:
       - key: ADMIN_EMAIL
         value: admin@proctor.local
       - key: ADMIN_PASSWORD
-        value: Admin@12345
+        # ⚠️ IMPORTANT: Change this value to a strong password before deploying!
+        # You can also set this in the Render dashboard under Environment Variables.
+        value: ChangeMe-SetInDashboard!
       # Uncomment and set DATABASE_URL for PostgreSQL
       # - key: DATABASE_URL
       #   fromDatabase:

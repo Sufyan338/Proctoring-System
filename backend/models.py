@@ -29,7 +29,7 @@ class User(db.Model):
     email = db.Column(db.String(200), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False, default="student")  # 'student' | 'admin'
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
     is_active = db.Column(db.Boolean, default=True)
 
     # relationships
@@ -63,7 +63,7 @@ class Exam(db.Model):
     description = db.Column(db.Text, default="")
     duration_minutes = db.Column(db.Integer, default=60)
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
     is_active = db.Column(db.Boolean, default=True)
 
     # relationships
@@ -91,7 +91,7 @@ class ExamSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     exam_id = db.Column(db.Integer, db.ForeignKey("exams.id"), nullable=False)
-    started_at = db.Column(db.DateTime, default=datetime.utcnow)
+    started_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
     ended_at = db.Column(db.DateTime, nullable=True)
     status = db.Column(db.String(20), default="active")  # active | completed | flagged
     alert_count = db.Column(db.Integer, default=0)
@@ -136,7 +136,7 @@ class Alert(db.Model):
     alert_type = db.Column(db.String(50), nullable=False)
     confidence = db.Column(db.Float, default=1.0)   # 0.0 – 1.0
     message = db.Column(db.Text, default="")
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
     frame_snapshot = db.Column(db.Text, nullable=True)  # base64 thumbnail (optional)
 
     # relationship

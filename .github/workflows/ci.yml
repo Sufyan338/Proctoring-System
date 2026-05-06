@@ -6,11 +6,17 @@ on:
   pull_request:
     branches: [ main ]
 
+# Restrict default token permissions to the minimum required
+permissions:
+  contents: read
+
 jobs:
   # ── Backend: lint + test ──────────────────────────────────────────────────
   backend:
     name: Backend (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         python-version: ["3.11"]
@@ -29,10 +35,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libgl1
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies (CI subset – no mediapipe)
         run: |
           pip install --upgrade pip
-          # Install everything except mediapipe for CI speed
           grep -v '^mediapipe' requirements.txt | pip install -r /dev/stdin
 
       - name: Run tests
@@ -48,6 +53,8 @@ jobs:
   frontend:
     name: Frontend static check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
 

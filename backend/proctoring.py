@@ -190,10 +190,12 @@ def stats():
     total_alerts = Alert.query.count()
 
     alert_breakdown = {}
-    for row in db.session.execute(
-        db.text("SELECT alert_type, COUNT(*) as cnt FROM alerts GROUP BY alert_type")
+    for alert_type, count in (
+        db.session.query(Alert.alert_type, db.func.count(Alert.id))
+        .group_by(Alert.alert_type)
+        .all()
     ):
-        alert_breakdown[row[0]] = row[1]
+        alert_breakdown[alert_type] = count
 
     return jsonify(
         {
