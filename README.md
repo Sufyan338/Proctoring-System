@@ -160,6 +160,8 @@ Frame (JPEG/PNG) from browser
 |--------|----------|-------------|
 | GET | `/api/exams/` | List active exams |
 | POST | `/api/exams/` | Create exam (admin) |
+| GET | `/api/exams/<id>` | Get exam by ID |
+| DELETE | `/api/exams/<id>` | Deactivate exam (admin) |
 | POST | `/api/exams/<id>/start` | Student starts session |
 | POST | `/api/exams/sessions/<sid>/end` | End session |
 | GET | `/api/exams/sessions/` | List sessions |

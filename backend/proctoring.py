@@ -37,11 +37,8 @@ def _current_user() -> User | None:
     return db.session.get(User, get_jwt_identity())
 
 
-def _get_session_or_404(session_id: int):
-    session = db.session.get(ExamSession, session_id)
-    if not session:
-        return None, (jsonify({"error": "Session not found."}), 404)
-    return session, None
+def _get_session(session_id: int):
+    return db.session.get(ExamSession, session_id)
 
 
 # ── Analyse frame ─────────────────────────────────────────────────────────────
@@ -66,9 +63,9 @@ def analyse_frame():
         return jsonify({"error": "session_id and frame are required."}), 400
 
     # Validate session ownership
-    session, err = _get_session_or_404(session_id)
-    if err:
-        return err
+    session = _get_session(session_id)
+    if not session:
+        return jsonify({"error": "Session not found."}), 404
     if user.role == "student" and session.student_id != user.id:
         return jsonify({"error": "Forbidden."}), 403
     if session.status != "active":
@@ -139,9 +136,9 @@ def manual_alert():
     if not session_id or not alert_type:
         return jsonify({"error": "session_id and alert_type are required."}), 400
 
-    session, err = _get_session_or_404(session_id)
-    if err:
-        return err
+    session = _get_session(session_id)
+    if not session:
+        return jsonify({"error": "Session not found."}), 404
     if user.role == "student" and session.student_id != user.id:
         return jsonify({"error": "Forbidden."}), 403
 

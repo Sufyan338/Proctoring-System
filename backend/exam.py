@@ -28,11 +28,8 @@ def _current_user() -> User | None:
     return db.session.get(User, get_jwt_identity())
 
 
-def _get_entity_or_404(model, entity_id: int, label: str):
-    entity = db.session.get(model, entity_id)
-    if not entity:
-        return None, (jsonify({"error": f"{label} not found."}), 404)
-    return entity, None
+def _get_entity(model, entity_id: int):
+    return db.session.get(model, entity_id)
 
 
 # ── Create exam ───────────────────────────────────────────────────────────────
@@ -71,9 +68,9 @@ def list_exams():
 @exam_bp.route("/<int:exam_id>", methods=["GET"])
 @jwt_required()
 def get_exam(exam_id: int):
-    exam, err = _get_entity_or_404(Exam, exam_id, "Exam")
-    if err:
-        return err
+    exam = _get_entity(Exam, exam_id)
+    if not exam:
+        return jsonify({"error": "Exam not found."}), 404
     return jsonify(exam.to_dict()), 200
 
 
@@ -85,9 +82,9 @@ def delete_exam(exam_id: int):
     if not user or user.role != "admin":
         return jsonify({"error": "Admin access required."}), 403
 
-    exam, err = _get_entity_or_404(Exam, exam_id, "Exam")
-    if err:
-        return err
+    exam = _get_entity(Exam, exam_id)
+    if not exam:
+        return jsonify({"error": "Exam not found."}), 404
     exam.is_active = False
     db.session.commit()
     return jsonify({"message": "Exam deactivated."}), 200
@@ -121,9 +118,9 @@ def start_session(exam_id: int):
 @jwt_required()
 def end_session(session_id: int):
     user = _current_user()
-    session, err = _get_entity_or_404(ExamSession, session_id, "Session")
-    if err:
-        return err
+    session = _get_entity(ExamSession, session_id)
+    if not session:
+        return jsonify({"error": "Session not found."}), 404
 
     if user.role == "student" and session.student_id != user.id:
         return jsonify({"error": "Forbidden."}), 403
@@ -157,9 +154,9 @@ def list_sessions():
 @jwt_required()
 def get_session(session_id: int):
     user = _current_user()
-    session, err = _get_entity_or_404(ExamSession, session_id, "Session")
-    if err:
-        return err
+    session = _get_entity(ExamSession, session_id)
+    if not session:
+        return jsonify({"error": "Session not found."}), 404
 
     if user.role == "student" and session.student_id != user.id:
         return jsonify({"error": "Forbidden."}), 403
