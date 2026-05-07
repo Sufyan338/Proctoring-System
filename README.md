@@ -165,6 +165,7 @@ Frame (JPEG/PNG) from browser
 | POST | `/api/exams/<id>/start` | Student starts session |
 | POST | `/api/exams/sessions/<sid>/end` | End session |
 | GET | `/api/exams/sessions/` | List sessions |
+| GET | `/api/exams/sessions/<sid>` | Get session details with alerts |
 
 ### Proctoring
 | Method | Endpoint | Description |
