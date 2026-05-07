@@ -20,6 +20,7 @@ numpy==1.26.4
 # ── Utilities ─────────────────────────────────────────────────────────────────
 Werkzeug==3.0.3
 python-dotenv==1.0.1
+# Streamlit Cloud deploys omit streamlit-option-menu/streamlit-webrtc to avoid unavailable pins.
 streamlit==1.45.1
 
 # ── Testing ───────────────────────────────────────────────────────────────────
