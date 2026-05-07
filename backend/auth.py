@@ -24,7 +24,7 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 # ── helpers ───────────────────────────────────────────────────────────────────
 def _get_current_user() -> User | None:
     uid = get_jwt_identity()
-    return User.query.get(uid)
+    return db.session.get(User, uid)
 
 
 def _require_admin(user: User):

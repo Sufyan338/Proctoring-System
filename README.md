@@ -211,6 +211,21 @@ railway up
 
 Set the same environment variables in Railway dashboard.
 
+### Option C – Streamlit Community Cloud
+
+1. Deploy this repository in Streamlit Community Cloud.
+2. Set app file to: `streamlit_app.py`
+3. In app settings, set Python version to **3.11**
+4. Configure secrets/environment variables:
+   - `SECRET_KEY`
+   - `JWT_SECRET_KEY`
+   - `ADMIN_PASSWORD`
+
+Run locally:
+```bash
+streamlit run streamlit_app.py
+```
+
 ### Frontend on Vercel / Netlify
 
 If you want to host the frontend separately:
@@ -229,6 +244,7 @@ If you want to host the frontend separately:
 - CORS restricted to configured origins in production
 - Frame size limited to 1 MB to prevent abuse
 - Tab-switch and keyboard shortcuts logged as alerts
+- MediaPipe is optional in cloud deployments; Haar-cascade fallback remains enabled
 
 ---
 

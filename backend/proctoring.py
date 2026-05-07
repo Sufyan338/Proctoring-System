@@ -34,7 +34,7 @@ def _get_detector() -> FaceDetector:
 
 
 def _current_user() -> User | None:
-    return User.query.get(get_jwt_identity())
+    return db.session.get(User, get_jwt_identity())
 
 
 # ── Analyse frame ─────────────────────────────────────────────────────────────

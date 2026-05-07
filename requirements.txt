@@ -14,11 +14,13 @@ SQLAlchemy==2.0.30
 opencv-python-headless==4.9.0.80
 numpy==1.26.4
 # MediaPipe for advanced face-mesh and gaze detection
-mediapipe==0.10.14
+# Optional in cloud deployments (Streamlit/CI fallback to Haar detection when absent):
+# mediapipe==0.10.14
 
 # ── Utilities ─────────────────────────────────────────────────────────────────
 Werkzeug==3.0.3
 python-dotenv==1.0.1
+streamlit==1.45.1
 
 # ── Testing ───────────────────────────────────────────────────────────────────
 pytest==8.2.0

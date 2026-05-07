@@ -25,7 +25,7 @@ exam_bp = Blueprint("exams", __name__, url_prefix="/api/exams")
 
 
 def _current_user() -> User | None:
-    return User.query.get(get_jwt_identity())
+    return db.session.get(User, get_jwt_identity())
 
 
 # ── Create exam ───────────────────────────────────────────────────────────────
