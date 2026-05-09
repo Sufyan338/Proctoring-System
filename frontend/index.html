@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProctorAI – Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-card">
+    <div class="brand">
+      <span class="brand-icon">🎓</span>
+      <h1>ProctorAI</h1>
+      <p>AI-Powered Smart Online Exam Proctoring</p>
+    </div>
+
+    <!-- Tab selector -->
+    <div class="tab-bar">
+      <button class="tab active" data-tab="login">Login</button>
+      <button class="tab" data-tab="register">Register</button>
+    </div>
+
+    <!-- Login form -->
+    <form id="loginForm" class="auth-form active" autocomplete="off">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" placeholder="••••••••" required />
+      </div>
+      <div id="loginError" class="error-msg hidden"></div>
+      <button type="submit" class="btn-primary" id="loginBtn">
+        <span class="btn-text">Sign In</span>
+        <span class="spinner hidden"></span>
+      </button>
+    </form>
+
+    <!-- Register form -->
+    <form id="registerForm" class="auth-form" autocomplete="off">
+      <div class="form-group">
+        <label for="regName">Full Name</label>
+        <input id="regName" type="text" placeholder="John Smith" required />
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email</label>
+        <input id="regEmail" type="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <input id="regPassword" type="password" placeholder="Min 6 characters" required minlength="6" />
+      </div>
+      <div class="form-group">
+        <label for="regRole">Role</label>
+        <select id="regRole">
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div id="registerError" class="error-msg hidden"></div>
+      <button type="submit" class="btn-primary" id="registerBtn">
+        <span class="btn-text">Create Account</span>
+        <span class="spinner hidden"></span>
+      </button>
+    </form>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

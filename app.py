@@ -1,3 +1,4 @@
+from streamlit_app import *  # noqa: F401,F403
 import streamlit as st
 from streamlit_option_menu import option_menu
 import os
