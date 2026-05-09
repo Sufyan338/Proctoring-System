@@ -21,6 +21,7 @@ numpy==1.26.4
 Werkzeug==3.0.3
 python-dotenv==1.0.1
 # Streamlit Cloud deploys omit streamlit-option-menu/streamlit-webrtc to avoid unavailable pins.
+# Python runtime is pinned via runtime.txt (3.11) to keep packages compatible.
 streamlit==1.45.1
 
 # ── Testing ───────────────────────────────────────────────────────────────────

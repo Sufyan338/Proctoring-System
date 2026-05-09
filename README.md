@@ -218,7 +218,7 @@ Set the same environment variables in Railway dashboard.
 
 1. Deploy this repository in Streamlit Community Cloud.
 2. Set app file to: `streamlit_app.py`
-3. In app settings, set Python version to **3.11**
+3. Python **3.11** is pinned via `runtime.txt` (keep 3.11 if you override it)
 4. Configure secrets/environment variables:
    - `SECRET_KEY`
    - `JWT_SECRET_KEY`
