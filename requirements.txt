@@ -29,7 +29,7 @@ pytest==8.2.0
 pytest-cov==5.0.0
 
 streamlit-webrtc==0.47.0
-streamlit-option-menu==0.3.9
+streamlit-option-menu==0.3.13
 opencv-python==4.8.1.78
 mediapipe==0.10.9
 numpy==1.24.3
