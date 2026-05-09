@@ -29,10 +29,10 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             libgl1 ffmpeg libavdevice-dev libavfilter-dev libavformat-dev \
             libavcodec-dev libavutil-dev libswresample-dev libswscale-dev
-      - name: Install Python dependencies (CI subset – no mediapipe)
+      - name: Install Python dependencies (CI subset – no mediapipe/av)
         run: |
           pip install --upgrade pip
-          grep -v '^mediapipe' requirements.txt | pip install -r /dev/stdin
+          grep -v '^mediapipe\|^av' requirements.txt | pip install -r /dev/stdin
       - name: Run tests
         env:
           FLASK_ENV: development
