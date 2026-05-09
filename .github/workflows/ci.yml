@@ -26,7 +26,9 @@ jobs:
       - name: Install system deps (OpenCV headless + FFmpeg)
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libgl1 ffmpeg
+          sudo apt-get install -y --no-install-recommends \
+            libgl1 ffmpeg libavdevice-dev libavfilter-dev libavformat-dev \
+            libavcodec-dev libavutil-dev libswresample-dev libswscale-dev
       - name: Install Python dependencies (CI subset – no mediapipe)
         run: |
           pip install --upgrade pip
