@@ -1,15 +1,11 @@
 name: CI – Lint, Test & Build
-
 on:
   push:
     branches: [ main, "copilot/**" ]
   pull_request:
     branches: [ main ]
-
-# Restrict default token permissions to the minimum required
 permissions:
   contents: read
-
 jobs:
   # ── Backend: lint + test ──────────────────────────────────────────────────
   backend:
@@ -20,26 +16,21 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.11"]
-
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-
-      - name: Install system deps (OpenCV headless)
+      - name: Install system deps (OpenCV headless + FFmpeg)  # ← updated
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libgl1
-
+          sudo apt-get install -y --no-install-recommends libgl1 ffmpeg  # ← ffmpeg added
       - name: Install Python dependencies (CI subset – no mediapipe)
         run: |
           pip install --upgrade pip
           grep -v '^mediapipe' requirements.txt | pip install -r /dev/stdin
-
       - name: Run tests
         env:
           FLASK_ENV: development
@@ -48,7 +39,6 @@ jobs:
           TESTING: "true"
         run: |
           pytest tests/ -v --tb=short --cov=backend --cov-report=term-missing
-
   # ── Frontend: static validation ───────────────────────────────────────────
   frontend:
     name: Frontend static check
@@ -57,13 +47,12 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-
       - name: Check HTML files exist
         run: |
-          test -f frontend/index.html     && echo "index.html OK"
-          test -f frontend/exam.html      && echo "exam.html OK"
-          test -f frontend/dashboard.html && echo "dashboard.html OK"
-          test -f frontend/css/style.css  && echo "style.css OK"
-          test -f frontend/js/auth.js     && echo "auth.js OK"
-          test -f frontend/js/exam.js     && echo "exam.js OK"
+          test -f frontend/index.html      && echo "index.html OK"
+          test -f frontend/exam.html       && echo "exam.html OK"
+          test -f frontend/dashboard.html  && echo "dashboard.html OK"
+          test -f frontend/css/style.css   && echo "style.css OK"
+          test -f frontend/js/auth.js      && echo "auth.js OK"
+          test -f frontend/js/exam.js      && echo "exam.js OK"
           test -f frontend/js/dashboard.js && echo "dashboard.js OK"
